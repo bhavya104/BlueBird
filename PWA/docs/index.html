@@ -39,40 +39,13 @@
             </header>
             <div class='card-content'>
               <div class='content'>
-                <div class='card has-text-centered' v-show='ec_connected === true'>
+                <div class='card has-text-centered' v-show='papa_connected === true'>
                   <div class='card-content'>
-                    <p class='title is-size-1'>{{ ec }}
-                      <span class='is-size-5'>{{ ec_unit }}</span>
-                      <a href='#' class='is-size-5' v-show='connected === true' v-on:click="ec_config">
+                    <p class='title is-size-1'>{{ papa }}
+                      <span class='is-size-5'>{{ papa_unit }}</span>
+                      <a href='#' class='is-size-5' v-show='connected === true' v-on:click="papa_config">
                       <span class='icon is-pulled-right'><i style='color:#DDDDDD;' class='fas fa-sliders-h'></i></span>
                       </a>
-                    </p>
-                  </div>
-                </div>
-                <div class='card has-text-centered' v-show='ph_connected === true'>
-                  <div class='card-content'>
-                    <p class='title is-size-1'>{{ ph }}
-                      <span class='is-size-5'>{{ ph_unit }}</span>
-                      <a href='#' class='is-size-5' v-on:click="ph_config">
-                      <span class='icon is-pulled-right'><i style='color:#DDDDDD;' class='fas fa-sliders-h'></i></span>
-                      </a>
-                    </p>
-                  </div>
-                </div>
-                <div class='card has-text-centered' v-show='orp_connected === true'>
-                  <div class='card-content'>
-                    <p class='title is-size-1'>{{ orp }}
-                      <span class='is-size-5'>{{ orp_unit }}</span>
-                      <a href='#' class='is-size-5' v-show='connected === true' v-on:click="orp_config">
-                      <span class='icon is-pulled-right'><i style='color:#DDDDDD;' class='fas fa-sliders-h'></i></span>
-                      </a>
-                    </p>
-                  </div>
-                </div>
-                <div class='card has-text-centered' v-show='connected === true'>
-                  <div class='card-content'>
-                    <p class='title is-size-1'>{{ temp }}
-                      <span class='is-size-5'>{{ temp_unit }}</span>
                     </p>
                   </div>
                 </div>
@@ -85,49 +58,49 @@
           <!-- ^ card -->
       </div>
       <!-- ^ container -->
-      <div class="ec_config_modal modal">
+      <div class="papa_config_modal modal">
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">EC Configuration </p>
-            <button class="ec_modal_close delete"></button>
+            <button class="papa_modal_close delete"></button>
           </header>
           <section class="modal-card-body">
             <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
               <tbody>
                 <tr>
                   <td>Offset</td>
-                  <td>{{ ec_offset }}</td>
-                  <td><span class="button is-small" v-on:click="ec_set_offset">Calibrate</span></td>
+                  <td>{{ papa_offset }}</td>
+                  <td><span class="button is-small" v-on:click="papa_set_offset">Calibrate</span></td>
                 </tr>               
                 <tr>
                   <td>Low</td>
                   <td></td>
-                  <td><span class="button is-small" v-on:click="ec_low">Calibrate</span></td>
+                  <td><span class="button is-small" v-on:click="papa_low">Calibrate</span></td>
                 </tr>
                 <tr>
                   <td>&emsp;Reading</td>
-                  <td>{{ ec_low_read }}</td>
+                  <td>{{ papa_low_read }}</td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>&emsp;Reference</td>
-                  <td>{{ ec_low_ref }}</td>
+                  <td>{{ papa_low_ref }}</td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>High</td>
                   <td></td>
-                  <td><span class="button is-small" v-on:click="ec_high">Calibrate</span></td>
+                  <td><span class="button is-small" v-on:click="papa_high">Calibrate</span></td>
                 </tr>
                 <tr>
                   <td>&emsp;Reading</td>
-                  <td>{{ ec_high_read }}</td>
+                  <td>{{ papa_high_read }}</td>
                   <td></td>
                 </tr>
                 <tr>
                   <td>&emsp;Reference</td>
-                  <td>{{ ec_high_ref }}</td>
+                  <td>{{ papa_high_ref }}</td>
                   <td></td>
                 </tr>
                 <tr>
@@ -138,113 +111,26 @@
                 </tr>
                 <tr>
                   <td>&emsp;Constant</td>
-                  <td>{{ ec_temp_constant }}</td>
-                  <td><span class="button is-small" v-on:click="ec_set_temp_constant">Set</span></td>
+                  <td>{{ papa_temp_constant }}</td>
+                  <td><span class="button is-small" v-on:click="papa_set_temp_constant">Set</span></td>
                 </tr>
                 <tr>
                   <td>&emsp;Coefficient</td>
-                  <td>{{ ec_temp_coefficient }}</td>
-                  <td><span class="button is-small" v-on:click="ec_set_temp_coefficient">Set</span></td>
+                  <td>{{ papa_temp_coefficient }}</td>
+                  <td><span class="button is-small" v-on:click="papa_set_temp_coefficient">Set</span></td>
                 </tr>
               </tbody>
             </table>
           </section>
           <footer class="modal-card-foot">
-            <button class="button is-danger" v-on:click="ec_reset">Reset</button>
+            <button class="button is-danger" v-on:click="papa_reset">Reset</button>
           </footer>
         </div>
         <!-- ^ modal-card -->
       </div>
-      <!-- ^ ec_config_modal -->
-      <div class="ph_config_modal modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">pH Configuration </p>
-            <button class="ph_modal_close delete"></button>
-          </header>
-          <section class="modal-card-body">
-            <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
-              <tbody>
-                <tr>
-                  <td>Offset</td>
-                  <td>{{ ph_offset }}</td>
-                  <td><span class="button is-small" v-on:click="ph_set_offset">Calibrate</span></td>
-                </tr>               
-                <tr>
-                  <td>Low</td>
-                  <td></td>
-                  <td><span class="button is-small" v-on:click="ph_low">Calibrate</span></td>
-                </tr>
-                <tr>
-                  <td>&emsp;Reading</td>
-                  <td>{{ ph_low_read }}</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>&emsp;Reference</td>
-                  <td>{{ ph_low_ref }}</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>High</td>
-                  <td></td>
-                  <td><span class="button is-small" v-on:click="ph_high">Calibrate</span></td>
-                </tr>
-                <tr>
-                  <td>&emsp;Reading</td>
-                  <td>{{ ph_high_read }}</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>&emsp;Reference</td>
-                  <td>{{ ph_high_ref }}</td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-danger" v-on:click="ph_reset">Reset</button>
-          </footer>
-        </div>
-        <!-- ^ modal-card -->
-      </div>
-      <!-- ^ ph_config_modal -->
-      <div class="orp_config_modal modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">ORP Configuration </p>
-            <button class="orp_modal_close delete"></button>
-          </header>
-          <section class="modal-card-body">
-            <table class="table is-striped is-narrow is-hoverable is-fullwidth is-size-6">
-              <tbody>
-                <tr>
-                  <td>Offset</td>
-                  <td>{{ orp_offset }}</td>
-                  <td><span class="button is-small" v-on:click="orp_set_offset">Calibrate</span></td>
-                </tr>  
-                <tr>
-                  <td>Probe Potential</td>
-                  <td>{{ orp_potential }}</td>
-                  <td><span class="button is-small" v-on:click="orp_set_potential">Set</span></td>
-                </tr>               
-              </tbody>
-            </table>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-danger" v-on:click="orp_reset">Reset</button>
-          </footer>
-        </div>
-        <!-- ^ modal-card -->
-      </div>
-      <!-- ^ orp_config_modal -->
+      <!-- ^ papa_config_modal -->
     </section>
-    <script src="js/orp.js"></script>
-    <script src="js/ph.js"></script>
-    <script src="js/ec.js"></script>
+    <script src="js/papa.js"></script>
     <script src="js/ble.js"></script>
     <script src='js/app.js'></script>
   </body>
