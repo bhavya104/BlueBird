@@ -9,16 +9,11 @@ var app = new Vue({
     characteristic: 0,
     connected: false,
    papa: "-",
-   papa_unit: "mS",
+   papa_unit: "test",
     device_name: "Papa",
    papa_connected: false,
    papa_low_ref: "-",
    papa_low_read: "-",
-   papa_high_ref: "-",
-   papa_high_read: "-",
-   papa_offset: "-",
-   papa_temp_constant: "-",
-   papa_temp_coefficient: "-",
     switchConnected: false, 
     serviceUuid: "7549e55b-b314-4923-aa27-1403720b9cf4",
     txUuid: "b6ab8bdf-c704-49ec-83b1-bfca810c35f6",
@@ -48,13 +43,10 @@ var app = new Vue({
         this.papa_connected = obj.papa;
       }
     },
-   papa_config,
-   papa_set_offset,
-   papa_low,
-   papa_high,
-   papa_set_temp_constant,
-   papa_set_temp_coefficient,
-   papa_reset,
+     papa_config,
+     papa_set_offset,
+     papa_low,
+     papa_reset,
     disconnect
   }
 });
