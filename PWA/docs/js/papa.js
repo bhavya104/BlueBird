@@ -13,28 +13,6 @@ async function papa_reset() {
 }
 
 /**
- * Changes the temperature coefficient of the papa device
- * 0.019 is default.
- */
-async function papa_set_temp_coefficient() {
-  var papa = prompt("New temperature coefficient?", "0.019");
-  if (papa != null) {
-    await characteristic.writeValue(encoder.encode("PAPA " + papa));
-  }
-}
-
-/**
- * Changes the temperature constant of the papa device
- * 25 is default.
- */
-async function papa_set_temp_constant() {
-  var papa = prompt("New temperature constant to adjust readings to in C?", "25");
-  if (papa != null) {
-    await characteristic.writeValue(encoder.encode("PAPA " + papa));
-  }
-}
-
-/**
  * Shows the papa Configuration dialog
  */
 async function papa_config() {
