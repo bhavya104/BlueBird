@@ -25,11 +25,8 @@ async function connect() {
             this.value_update
           );
           characteristic = await service.getCharacteristic(this.rxUuid);
-          await characteristic.writeValue(encoder.encode("ecc"));
+          await characteristic.writeValue(encoder.encode("papa"));
           await new Promise(resolve => setTimeout(resolve, 10));
-          await characteristic.writeValue(encoder.encode("pc"));
-          await new Promise(resolve => setTimeout(resolve, 10));
-          await characteristic.writeValue(encoder.encode("oc"));
 
           this.measure();
 
@@ -54,27 +51,16 @@ function disconnect() {
   this.device = null;
   this.connected = false;
   this.device_name = "";
-  this.ec = "-";
+  this.papa = "-";
   this.temp = "-";
   this.status = "not connected";
-  this.ec_low_ref = "-";
-  this.ec_low_read = "-";
-  this.ec_high_ref = "-";
-  this.ec_high_read = "-";
-  this.ec_offset = "-";
-  this.ec_temp_constant = "-";
-  this.ec_temp_coefficient = "-";
-  this.ec_connected = false;
-  this.ph = "-";
-  this.ph_connected = false;
-  this.ph_low_ref = "-";
-  this.ph_low_read = "-";
-  this.ph_high_ref = "-";
-  this.ph_high_read = "-";
-  this.ph_offset = "-";
-  this.orp = "-";
-  this.orp_offset = "-";
-  this.orp_potential = "-";
-  this.orp_connected = false;
+  this.papa_low_ref = "-";
+  this.papa_low_read = "-";
+  this.papa_high_ref = "-";
+  this.papa_high_read = "-";
+  this.papa_offset = "-";
+  this.papa_temp_constant = "-";
+  this.papa_temp_coefficient = "-";
+  this.papa_connected = false;
   this.switchConnected = false;
 }
