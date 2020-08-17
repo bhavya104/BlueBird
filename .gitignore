@@ -10,6 +10,8 @@ firebase-debug.log*
 .firebase/
 .firebaserc
 firebase.json
+.vscode/
+.gitignore
 
 # Firebase config
 
