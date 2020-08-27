@@ -5,6 +5,7 @@
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic = NULL;
+BLECharacteristic* pCharacteristicR = NULL;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 uint32_t value = 0;
@@ -27,6 +28,26 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
+#define CHARACTERISTIC_UUID_RX "10fd2313-62c2-4053-b3af-7e6ca407bf21"
+class MyCallbacks: public BLECharacteristicCallbacks {
+
+    void onWrite(BLECharacteristic *pCharacteristic) {
+      std::string rxValue = pCharacteristic->getValue();
+      Serial.println(rxValue[0]);
+ 
+      if (rxValue.length() > 0) {
+        Serial.println("*********");
+        Serial.print("Received Value: ");
+ 
+        for (int i = 0; i < rxValue.length(); i++) {
+          Serial.print(rxValue[i]);
+        }
+        Serial.println();
+        Serial.println("*********");
+      }
+ 
+    }
+};
 
 
 void setup() {
@@ -55,6 +76,18 @@ void setup() {
   // Create a BLE Descriptor
   pCharacteristic->addDescriptor(new BLE2902());
 
+  /*
+  pCharacteristicR = pService->createCharacteristic(
+                                         CHARACTERISTIC_UUID_RX,
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+  pCharacteristicR->setCallbacks(new MyCallbacks());
+  */
+  
+  pCharacteristic->setCallbacks(new MyCallbacks());
+
+  //pCharacteristicR->addDescriptor(new BLE2902());
   // Start the service
   pService->start();
 
@@ -81,26 +114,11 @@ void loop() {
   pCharacteristic->setValue(&level, 2); // size : 8 bit -> 1 byte, this only accepts uint8_t
   pCharacteristic->notify(); // send first 20 bytes
   level++;
+
+  String longString = "luwheri38iuwhh13fh38r4chfwiho132dh83hfobjbjbjbjbjbjbjbjbjjbjbjbjbjbjbjbjbj";
+  pCharacteristic->setValue((uint8_t*)&longString[0], longString.length()); // size : 8 bit -> 1 byte, this only accepts uint8_t
+  pCharacteristic->notify();
+
   delay(1000); 
 
-  
-    // notify changed value
-//    if (deviceConnected) {
-//        pCharacteristic->setValue((uint8_t*)&value, 4);
-//        pCharacteristic->notify();
-//        value++;
-//        delay(10); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
-//    }
-//    // disconnecting
-//    if (!deviceConnected && oldDeviceConnected) {
-//        delay(500); // give the bluetooth stack the chance to get things ready
-//        pServer->startAdvertising(); // restart advertising
-//        Serial.println("start advertising");
-//        oldDeviceConnected = deviceConnected;
-//    }
-//    // connecting
-//    if (deviceConnected && !oldDeviceConnected) {
-//        // do stuff here on connecting
-//        oldDeviceConnected = deviceConnected;
-//    }
 }
