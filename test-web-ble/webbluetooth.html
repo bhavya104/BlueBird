@@ -1,6 +1,7 @@
 <button id="read">Connect with BLE device</button>
 <button id="start" disabled>Start</button>
 <button id="stop" disabled>Stop</button>
+<button id="disconnect" >Disconnect</button>
 
 <form id="send-form">
     <input id="input" type="text">
@@ -14,7 +15,7 @@
     // var bleService = 'battery_service'
 
     // same as SERVICE_UUID in arduino
-    var bleService = 'afa2f203-348f-4718-9cf3-f7ff0de38472'; 
+    var bleService = 'afa2f203-348f-4718-9cf3-f7ff0de38472';
     // var bleCharacteristic = 'battery_level'
 
     // same as CHARACTERISTIC_UUID in arduino 
@@ -24,26 +25,32 @@
     let sendForm = document.getElementById('send-form');
     let inputField = document.getElementById('input');
 
-    document.querySelector('#read').addEventListener('click', function() {
+    document.querySelector('#read').addEventListener('click', function () {
         if (isWebBluetoothEnabled()) {
             read()
         }
     })
 
-    document.querySelector('#start').addEventListener('click', function(event) {
+    document.querySelector('#start').addEventListener('click', function (event) {
         if (isWebBluetoothEnabled()) {
             start()
         }
     })
 
-    document.querySelector('#stop').addEventListener('click', function(event) {
+    document.querySelector('#stop').addEventListener('click', function (event) {
         if (isWebBluetoothEnabled()) {
             stop()
         }
     })
 
+    document.querySelector('#disconnect').addEventListener('click', function (event) {
+        if (isWebBluetoothEnabled()) {
+            onDisconnectButtonClick()
+        }
+    })
+
     // Handle form submit event
-    sendForm.addEventListener('submit', function(event) {
+    sendForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent form sending
         send(inputField.value); // Send text field contents
         inputField.value = ''; // Zero text field
@@ -104,8 +111,8 @@
             .then(characteristic => {
                 gattCharacteristic = characteristic
                 gattCharacteristic.addEventListener('characteristicvaluechanged',
-                        handleChangedValue)
-                    // handleChangedValue(gattCharacteristic.readValue());
+                    handleChangedValue)
+                // handleChangedValue(gattCharacteristic.readValue());
                 document.querySelector('#start').disabled = false
                 document.querySelector('#stop').disabled = true
                 gattCharacteristic.readValue();
@@ -118,29 +125,13 @@
 
     // function handleChangedValue(value) {
     function handleChangedValue(event) {
-        // let value = event.target.value.getUint8(0)
-        // var uint8 = new Uint8Array(30);
-        // uint8[0] = value;
-        // var now = new Date()
-        // console.log('> ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() + ' string input is ' + Decodeuint8arr(uint8))
-
         let value = event.target.value;
         console.log(Decodeuint8arr(value))
-
-        // value -> object
-        // event.target.value -> arraybuffer
-        // let decoder = new TextDecoder("uft-8");
-        // console.log(decoder.decode(value));
-
-        // let value = new TextDecoder().decode(event.target.value);
-        // console.log(value, 'in');
-
     }
 
 
     function send(data) {
         data = String(data);
-        {{/* gattCharacteristic = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'; */}}
 
         if (!data || !gattCharacteristic) {
             return;
@@ -153,37 +144,6 @@
     function writeToCharacteristic(characteristic, data) {
         characteristic.writeValue(new TextEncoder().encode(data));
     }
-
-    // function send(data) {
-    //     data = String(data);
-
-    //     if (!data || !gattCharacteristic) {
-    //         return;
-    //     }
-
-    //     data += '\n'
-    //     if (data.length > 20) {
-    //         let chunks = data.match(/(.|[/r/n])){1,20}/g);
-
-    //         writeToCharacteristic(gattCharacteristic, chunks[0]); // writing chunk[0] to characteristicCache
-
-    //         // for message longer than 20bytes
-    //         for (let i = 1; i < chunks.length; i++) {
-    //             setTimeout(() => {
-    //                 writeToCharacteristic(gattCharacteristic, chunks[i]);
-    //             }, i * 100);
-    //         }
-
-    //     } else {
-    //         writeToCharacteristic(gattCharacteristic, data);
-    //     }
-
-    //     console.log(data, 'out');
-    // }
-
-    // function writeToCharacteristic(characteristic, data) {
-    //     characteristic.writeValue(new TextEncoder().encode(data));
-    // }
 
     function start() {
         gattCharacteristic.startNotifications()
@@ -207,5 +167,38 @@
             .catch(error => {
                 console.log('[ERROR] Stop: ' + error)
             })
+    }
+
+    function onDisconnectButtonClick() {
+        if (!gattCharacteristic) {
+            return;
+        }
+        console.log('Disconnecting from Bluetooth Device...');
+        if (bluetoothDeviceDetected.gatt.connected) {
+            console.log('line 225');
+            bluetoothDeviceDetected.gatt.disconnect();
+        } else {
+            console.log('> Bluetooth Device is already disconnected');
+        }
+    }
+
+    function onDisconnected(event) {
+        // Object event.target is Bluetooth Device getting disconnected.
+        console.log('> Bluetooth Device disconnected');
+    }
+
+
+    function onReconnectButtonClick() {
+        if (!gattCharacteristic) {
+            return;
+        }
+        if (bluetoothDeviceDetected.gatt.connected) {
+            log('> Bluetooth Device is already connected');
+            return;
+        }
+        connect()
+            .catch(error => {
+                log('Argh! ' + error);
+            });
     }
 </script>
