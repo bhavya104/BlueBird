@@ -9,12 +9,16 @@ firebase-debug.*.log*
 
 # Firebase cache
 .firebase/
+.firebaserc
+firebase.json
+.vscode/
+.gitignore
 
 # Ignore Credentials
 public/script/credentials.js
 
 # Ignore 
-experimental
+experimental/
 
 # Firebase config
 
