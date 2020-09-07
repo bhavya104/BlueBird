@@ -12,7 +12,7 @@ firebase-debug.*.log*
 .firebaserc
 firebase.json
 .vscode/
-.gitignore
+# .gitignore
 .DS_Store
 
 # Ignore Credentials
