@@ -1,0 +1,201 @@
+<button id="read">Connect with BLE device</button>
+<button id="start" disabled>Start</button>
+<button id="stop" disabled>Stop</button>
+<button id="disconnect">Disconnect</button>
+
+<form id="send-form">
+    <input id="input" type="text">
+    <button type="submit">Send</button>
+
+</form>
+
+<script>
+    var deviceName = 'BlueBird'
+
+    // same as SERVICE_UUID in arduino
+    var bleService = 'afa2f203-348f-4718-9cf3-f7ff0de38472';
+    // var bleCharacteristic = 'battery_level'
+
+    // same as CHARACTERISTIC_UUID in arduino 
+    var bleCharacteristic = '450fcc81-dad5-46a6-959f-c5f41e37b669';
+    var bluetoothDeviceDetected
+    var gattCharacteristic
+    let sendForm = document.getElementById('send-form');
+    let inputField = document.getElementById('input');
+
+    document.querySelector('#read').addEventListener('click', function () {
+        if (isWebBluetoothEnabled()) {
+            read()
+        }
+    })
+
+    document.querySelector('#start').addEventListener('click', function (event) {
+        if (isWebBluetoothEnabled()) {
+            start()
+        }
+    })
+
+    document.querySelector('#stop').addEventListener('click', function (event) {
+        if (isWebBluetoothEnabled()) {
+            stop()
+        }
+    })
+
+    document.querySelector('#disconnect').addEventListener('click', function (event) {
+        if (isWebBluetoothEnabled()) {
+            onDisconnectButtonClick()
+        }
+    })
+
+    // Handle form submit event
+    sendForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form sending
+        send(inputField.value); // Send text field contents
+        inputField.value = ''; // Zero text field
+        inputField.focus(); // Focus on text field
+    });
+
+    function isWebBluetoothEnabled() {
+        if (!navigator.bluetooth) {
+            console.log('Web Bluetooth API is not available in this browser!')
+            return false
+        }
+
+        return true
+    }
+
+    function getDeviceInfo() {
+        let options = {
+            optionalServices: [bleService],
+            filters: [{
+                "name": deviceName
+            }]
+        }
+
+        console.log('Requesting any Bluetooth Device...')
+        return navigator.bluetooth.requestDevice(options).then(device => {
+            bluetoothDeviceDetected = device
+        }).catch(error => {
+            console.log('Argh! ' + error)
+        })
+    }
+
+    function read() {
+        return (bluetoothDeviceDetected ? Promise.resolve() : getDeviceInfo())
+            .then(connectGATT)
+            .then(_ => {
+                console.log('Reading UV Index...')
+                return gattCharacteristic.readValue()
+            })
+            .catch(error => {
+                console.log('Waiting to start reading: ' + error)
+            })
+    }
+
+    function connectGATT() {
+        if (bluetoothDeviceDetected.gatt.connected && gattCharacteristic) {
+            return Promise.resolve()
+        }
+
+        return bluetoothDeviceDetected.gatt.connect()
+            .then(server => {
+                console.log('Getting GATT Service...')
+                return server.getPrimaryService(bleService)
+            })
+            .then(service => {
+                console.log('Getting GATT Characteristic...')
+                return service.getCharacteristic(bleCharacteristic)
+            })
+            .then(characteristic => {
+                gattCharacteristic = characteristic
+                gattCharacteristic.addEventListener('characteristicvaluechanged',
+                    handleChangedValue)
+                // handleChangedValue(gattCharacteristic.readValue());
+                document.querySelector('#start').disabled = false
+                document.querySelector('#stop').disabled = true
+                gattCharacteristic.readValue();
+            })
+    }
+
+    function Decodeuint8arr(uint8array) {
+        return new TextDecoder("utf-8").decode(uint8array);
+    }
+
+    // function handleChangedValue(value) {
+    function handleChangedValue(event) {
+        let value = event.target.value;
+        console.log(Decodeuint8arr(value))
+    }
+
+
+    function send(data) {
+        data = String(data);
+
+        if (!data || !gattCharacteristic) {
+            return;
+        }
+
+        writeToCharacteristic(gattCharacteristic, data);
+        console.log(data, 'out');
+    }
+
+    function writeToCharacteristic(characteristic, data) {
+        characteristic.writeValue(new TextEncoder().encode(data));
+    }
+
+    function start() {
+        gattCharacteristic.startNotifications()
+            .then(_ => {
+                console.log('Start reading...')
+                document.querySelector('#start').disabled = true
+                document.querySelector('#stop').disabled = false
+            })
+            .catch(error => {
+                console.log('[ERROR] Start: ' + error)
+            })
+    }
+
+    function stop() {
+        gattCharacteristic.stopNotifications()
+            .then(_ => {
+                console.log('Stop reading...')
+                document.querySelector('#start').disabled = false
+                document.querySelector('#stop').disabled = true
+            })
+            .catch(error => {
+                console.log('[ERROR] Stop: ' + error)
+            })
+    }
+
+    function onDisconnectButtonClick() {
+        if (!gattCharacteristic) {
+            return;
+        }
+        console.log('Disconnecting from Bluetooth Device...');
+        if (bluetoothDeviceDetected.gatt.connected) {
+            bluetoothDeviceDetected.gatt.disconnect();
+        } else {
+            console.log('> Bluetooth Device is already disconnected');
+        }
+    }
+
+    function onDisconnected(event) {
+        // Object event.target is Bluetooth Device getting disconnected.
+        console.log('> Bluetooth Device disconnected');
+    }
+
+
+    function onReconnectButtonClick() {
+        if (!gattCharacteristic) {
+            return;
+        }
+        if (bluetoothDeviceDetected.gatt.connected) {
+            log('> Bluetooth Device is already connected');
+            return;
+        }
+        connect()
+            .catch(error => {
+                log('Argh! ' + error);
+            });
+    }
+</script>
