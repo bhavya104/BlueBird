@@ -1,0 +1,92 @@
+{
+  "short_name": "birdy",
+  "name": "Blue Bird",
+  "start_url": "/",
+  "lang": "en",
+  "description": "Offline first DashBird for your data",
+  "background_color": "#f4f3f3",
+  "theme_color": "#725ee4",
+  "dir": "ltr",
+  "display": "standalone",  
+  "prefer_related_applications": false,
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./asset/icon/maskable_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./asset/icon/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "./asset/icon/android-icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./asset/icon/apple-icon-180x180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "./asset/icon/apple-icon-152x152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "./asset/icon/apple-icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "./asset/icon/apple-icon-120x120.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "./asset/icon/apple-icon-114x114.png",
+      "type": "image/png",
+      "sizes": "114x114"
+    },
+    {
+      "src": "./asset/icon/favicon-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "./asset/icon/apple-icon-76x76.png",
+      "type": "image/png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "./asset/icon/apple-icon-72x72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "./asset/icon/apple-icon-60x60.png",
+      "type": "image/png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "./asset/icon/apple-icon-57x57.png",
+      "type": "image/png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "./asset/icon/favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "./asset/icon/favicon-16x16.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    }
+  ],
+  "prefer_related_applications": "false"
+}

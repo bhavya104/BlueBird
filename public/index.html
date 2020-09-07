@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="./asset/bluebird-logo.png" />
+  <meta name="BlueBird" content="BlueBird lets you access your clusterduck network and visualise sensor data" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style/style.css" />
+  <link rel="stylesheet" href="./style/snackbar.css" />
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="BB">
+  <meta name="apple-mobile-web-app-title" content="BB">
+  <meta name="theme-color" content="#233b69">
+  <meta name="msapplication-navbutton-color" content="#233b69">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="msapplication-starturl" content="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="icon" type="image/png" sizes="180x180" href="./asset/icon/apple-icon-180x180.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="./asset/icon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="114x114" href="./asset/icon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="114x114" href="./asset/icon/apple-icon-114x114.png">
+
+  <title>bluebird</title>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <img src="./asset/bluebird-logo-big.svg" id="bblogo"/>
+      <div class="controls">
+        <button id="read-button">Connect</button>
+        <button id="disconnect" >Disc</button>
+        <button id="start-button" disabled>Start</button>
+        <button id="stop-button" disabled>Stop</button>
+        
+
+        <form id="send-form">
+          <input id="input" type="text" placeholder="Run Command" />
+          <button id="send-button" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="data-container">
+      <div class="dash">
+        <p>dashbird</p>
+      </div>
+
+      <div class="workspace">
+        <p>public playground</p>
+      </div>
+
+      <div class="summary-container">
+        <p id="summary-title">live incoming data</p>
+        <p id="bird-payload">Data</p>
+      </div>
+
+
+
+      <div class="dumy-data">
+
+        <h3>here goes data ..</h3>
+      </div>
+      <div class="dumy-data">
+        <h3>here goes data ..</h3>
+        <h1>here goes data ..</h1>
+
+      </div>
+      <div class="dumy-data">
+        <h3>here goes data ..</h3>
+      </div>
+      <div class="dumy-data">
+        <h3>here goes data ..</h3>
+      </div>
+
+      <div class="nav_container"></div>
+
+    </div>
+  </main>
+  <footer id="footer">
+    <span id="todo-count"></span>
+    <div id="sync-wrapper">
+      <div id="sync-success">Currently syncing</div>
+      <div id="sync-error">There was a problem syncing</div>
+    </div>
+    <div id="snackbar"></div>
+
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+
+  <script type="text/javascript" src="script/credentials.js"></script>
+  <script type="text/javascript" src="script/app.js"></script>
+  <script type="text/javascript" src="script/offline.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.2.0/dist/confetti.browser.min.js"></script>
+
+  <!-- <script src="./script/pouchdb-7.2.1.js"></script> -->
+  <!-- <script src="js/pouchdb -->
+
+
+  <script>
+    //check whether the browser supports service worker
+    if ('serviceWorker' in navigator) {
+      //if so, register our service worker
+      navigator.serviceWorker.register('sw.js')
+        //then log a note that this worked for debugging purposes
+        .then(function () {
+          console.log("Service Worker Registered");
+        });
+    }
+  </script>
+</body>
+
+</html>
