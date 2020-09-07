@@ -13,6 +13,7 @@ firebase-debug.*.log*
 firebase.json
 .vscode/
 .gitignore
+.DS_Store
 
 # Ignore Credentials
 public/script/credentials.js
